@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Information - Raldy Lopez</title>
+  <!-- Estilos principales -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ====== Header ====== -->
+<header>
+  <h1>Raldy Lopez Modeling Portfolio</h1>
+
+  <!-- Menú hamburguesa -->
+  <nav class="navbar">
+    <!-- Botón hamburguesa con 3 líneas -->
+    <div class="menu-toggle" id="menu-toggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <!-- Enlaces del menú -->
+    <ul class="nav-links" id="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="fitness.html">Fitness</a></li>
+      <li><a href="about.html">Information</a></li>
+      <li><a href="lifestyle.html">Lifestyle</a></li>
+      <li><a href="videos.html">Videos</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- ====== Contenido principal ====== -->
+<main>
+
+<!-- ====== About Section ====== -->
+<section class="about-section">
+  <div class="about-card">
+    <!-- Español -->
+    <div class="about-block">
+      <h2>Sobre mí</h2>
+      <p class="about-focus">Enfocado en marcas, agencias y diseñadores</p>
+      <p class="about-description">
+        Modelo masculino versátil, especializado en trajes de caballero, moda urbana y campañas comerciales.
+      </p>
+      <ul class="about-list">
+        <li><strong>Nombre:</strong> Raldy Lopez</li>
+        <li><strong>Altura:</strong> 188 cm | 6'1"</li>
+        <li><strong>Peso:</strong> 165 lbs</li>
+        <li><strong>Talla de zapatos:</strong> 10 / 10.5</li>
+        <li><strong>Complexión:</strong> Atlética / Fitness</li>
+        <li><strong>Tono de piel:</strong> Trigueño claro / Oliva</li>
+        <li><strong>Ubicación:</strong> San Francisco de Macorís, República Dominicana</li>
+        <li><strong>Experiencia:</strong> Pasarelas, campañas digitales, colaboraciones con diseñadores y marcas</li>
+        <li><strong>Idiomas:</strong> Español (nativo), Inglés (B2)</li>
+      </ul>
+    </div>
+
+    <!-- Inglés -->
+    <div class="about-block">
+      <h2>About Me</h2>
+      <p class="about-focus">Focused on brands, agencies and designers</p>
+      <p class="about-description">
+        Versatile male model, specialized in gentlemen’s suits, urban fashion, and commercial campaigns.
+      </p>
+      <ul class="about-list">
+        <li><strong>Name:</strong> Raldy Lopez</li>
+        <li><strong>Height:</strong> 188 cm | 6'1"</li>
+        <li><strong>Weight:</strong> 165 lbs</li>
+        <li><strong>Shoe Size:</strong> 10 / 10.5</li>
+        <li><strong>Build:</strong> Athletic / Fitness</li>
+        <li><strong>Skin tone:</strong> Light tan / Olive</li>
+        <li><strong>Location:</strong> San Francisco de Macorís, Dominican Republic</li>
+        <li><strong>Experience:</strong> Runway modeling, digital campaigns, collaborations with designers and brands</li>
+        <li><strong>Languages:</strong> Spanish (native), English (B2)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+</main>
+
+<!-- ====== Footer ====== -->
+<footer class="footer">
+  <p class="footer__texto">Raldy Lopez ©️</p>
+</footer>
+
+
+<!-- ====== Scripts ====== -->
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
+<script>
+  // Configuración de Fancybox
+  Fancybox.bind("[data-fancybox]", {
+    Thumbs: false,
+    Toolbar: { display: ["close"] }
+  });
+</script>
+
+
+<!-- ====== Menu hamburguesa ====== -->
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const navLinks = document.getElementById('nav-links');
+
+  toggle.addEventListener('click', () => {
+    toggle.classList.toggle('active');   // 🔥 activa animación del botón
+    navLinks.classList.toggle('active'); // 🔥 muestra/oculta menú
+  });
+</script>
+
+</body>
+</html>

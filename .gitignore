@@ -1,0 +1,15 @@
+# Ignorar archivos del sistema de Windows
+AppData/
+OneDrive/
+Documents/
+Downloads/
+Pictures/
+Music/
+Videos/
+*.DAT
+*.LOG*
+*.ini
+
+# Ignorar configuraciones locales
+.vscode/
+*.tmp
