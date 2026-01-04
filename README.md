@@ -7,4 +7,5 @@ Este portafolio muestra mi trabajo en varias categorías de modelaje:
 
 
 🌐 View Portfolio | Ver Portafolio
-👉 CLICK HERE TO VIEW THE FULL PORTFOLIO 👈
+👉 raldylopez20.github.io/Modeling-Portfolio 👈
+
