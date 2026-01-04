@@ -322,12 +322,12 @@ section {
 
   /* Grid se convierte en una sola columna en móviles pequeños */
   .grid {
-    grid-template-columns: 1fr;
-    gap: 0.3rem;
+    grid-template-columns: repeat(2, 1fr);;
+    gap: 0.4rem;
   }
 
   .grid img {
-    height: auto; /* Altura automática para no deformar en móviles pequeños */
+    height: 300; /* Altura automática para no deformar en móviles pequeños */
   }
 
   .contact-form label {
