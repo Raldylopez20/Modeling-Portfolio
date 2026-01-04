@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -117,4 +118,79 @@
 </script>
 
 </body>
+=======
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Information - Raldy Lopez</title>
+  <!-- Estilos principales -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ====== Header ====== -->
+<header>
+  <h1>Raldy Lopez Modeling Portfolio</h1>
+
+  <!-- Menú hamburguesa -->
+  <nav class="navbar">
+    <!-- Botón hamburguesa con 3 líneas -->
+    <div class="menu-toggle" id="menu-toggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <!-- Enlaces del menú -->
+    <ul class="nav-links" id="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="fitness.html">Fitness</a></li>
+      <li><a href="about.html">Information</a></li>
+      <li><a href="lifestyle.html">Lifestyle</a></li>
+      <li><a href="videos.html">Videos</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- ====== Contenido principal ====== -->
+<main>
+  <h2>Sobre mí</h2>
+  <p>
+    Coming soon...👨‍💻🛠️🔧
+  </p>
+</main>
+
+<!-- ====== Footer ====== -->
+<footer class="footer">
+  <p class="footer__texto">Raldy Lopez ©️</p>
+</footer>
+
+
+<!-- ====== Scripts ====== -->
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
+<script>
+  // Configuración de Fancybox
+  Fancybox.bind("[data-fancybox]", {
+    Thumbs: false,
+    Toolbar: { display: ["close"] }
+  });
+</script>
+
+
+<!-- ====== Menu hamburguesa ====== -->
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const navLinks = document.getElementById('nav-links');
+
+  toggle.addEventListener('click', () => {
+    toggle.classList.toggle('active');   // 🔥 activa animación del botón
+    navLinks.classList.toggle('active'); // 🔥 muestra/oculta menú
+  });
+</script>
+
+</body>
+>>>>>>> 8680208b5df3a2a7dc2873b37cdf57f102aad452
 </html>
