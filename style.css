@@ -78,6 +78,74 @@ section {
   filter: brightness(1.1);
 }
 
+/* ====== Botón flotante de WhatsApp ====== */
+.whatsapp-flotante {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  width: 60px;
+  height: 60px;
+  background-color: #25D366;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-size: 30px;
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+  z-index: 1000;
+  transition: all 0.3s ease;
+  animation: pulse-animation 2s infinite;
+}
+
+.whatsapp-flotante:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+  background-color: #128C7E;
+}
+
+.whatsapp-flotante i {
+  transition: transform 0.3s ease;
+}
+
+.whatsapp-flotante:hover i {
+  transform: rotate(25deg);
+}
+
+/* Animación de pulso llamativa */
+@keyframes pulse-animation {
+  0% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+  }
+  
+  70% {
+    box-shadow: 0 0 0 20px rgba(37, 211, 102, 0);
+  }
+  
+  100% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+  }
+}
+
+/* Animación adicional de rebote */
+@keyframes bounce-animation {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Aplicar animación de rebote cada 4 segundos */
+.whatsapp-flotante {
+  animation: pulse-animation 2s infinite, bounce-animation 4s infinite;
+}
+
 /* ====== Footer ====== */
 .footer {
   text-align: center;
@@ -89,6 +157,18 @@ section {
 .footer__texto {
   margin: 0;
   color: #aaa;
+}
+
+.footer-enlace {
+  color: #f39c12;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.footer-enlace:hover {
+  color: #fff;
+  text-decoration: underline;
 }
 
 /* ====== Formulario de contacto ====== */
