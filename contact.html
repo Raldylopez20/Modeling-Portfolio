@@ -1,220 +1,148 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact - Raldy Lopez</title>
   <!-- Estilos principales -->
   <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-<!-- ====== Header ====== -->
-<header>
-  <h1>Raldy Lopez Modeling Portfolio</h1>
-
-  <!-- Menú hamburguesa -->
-  <nav class="navbar">
-    <!-- Botón hamburguesa con 3 líneas -->
-    <div class="menu-toggle" id="menu-toggle">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-
-    <!-- Enlaces del menú -->
-    <ul class="nav-links" id="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="fitness.html">Fitness</a></li>
-      <li><a href="about.html">Information</a></li>
-      <li><a href="lifestyle.html">Lifestyle</a></li>
-      <li><a href="videos.html">Videos</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
-  </nav>
-</header>
-
-<!-- ====== Contenido principal ====== -->
-<main>
-  <!-- Título principal de la sección -->
-  <h2 class="contact_me">Contact me</h2>
-
-  <!-- ====== Botones externos agrupados ====== -->
-  <div class="contact-actions">
-    <!-- Botón de WhatsApp -->
-    <div>
-      <p>Send me a WhatsApp message:</p>
-      <a href="https://wa.me/18294635850?text=Hola%20Raldy%20un%20placer%2C%20soy%20%28TU%20NOMBRE%29%2C%20me%20gusto%20tu%20perfil%20y%20me%20gustaria%20trabajar%20o%20colaborar%20contigo%21%21"
-         target="_blank"
-         class="whatsapp-btn">
-        📱 Send WhatsApp
-      </a>
-    </div>
-
-    <!-- Botón de Instagram -->
-    <div>
-      <p>Also, you can follow me and write to me on Instagram:</p>
-      <a href="https://www.instagram.com/raldylopez/" target="_blank" class="instagram-btn">
-        📸 Instagram
-      </a>
-    </div>
-  </div>
-
-  <!-- ====== Formulario conectado con Formspree ====== -->
-  <form class="contact-form" action="https://formspree.io/f/maqyvzla" method="POST">
-    <!-- Subtítulo del formulario -->
-    <p class="enviarcorreo">Send me an email</p>
-
-    <!-- Campo nombre -->
-    <label for="name">Nombre</label>
-    <input type="text" id="name" name="name" placeholder="Name" required>
-
-    <!-- Campo correo -->
-    <label for="email">Correo electrónico</label>
-    <input type="email" id="email" name="email" placeholder="Email" required>
-
-    <!-- Campo mensaje -->
-    <label for="message">Mensaje</label>
-    <textarea id="message" name="message" rows="5" placeholder="Write your message here..." required></textarea>
-
-    <!-- Botón de envío -->
-    <button type="submit">Enviar por Email</button>
-  </form>
-</main>
-
-<!-- ====== Footer ====== -->
-<footer class="footer">
-  <p class="footer__texto">Raldy Lopez ©️</p>
-</footer>
-
-<!-- ====== Scripts ====== -->
-
-<!-- Fancybox (si usas galería en otras páginas) -->
-<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
-<script>
-  Fancybox.bind("[data-fancybox]", {
-    Thumbs: false,
-    Toolbar: { display: ["close"] }
-  });
-</script>
-
-<!-- Menú hamburguesa responsive -->
-<script>
-  const toggle = document.getElementById('menu-toggle');
-  const navLinks = document.getElementById('nav-links');
-
-  toggle.addEventListener('click', () => {
-    toggle.classList.toggle('active');   // 🔥 activa animación del botón
-    navLinks.classList.toggle('active'); // 🔥 muestra/oculta menú
-  });
-</script>
-
-</body>
-=======
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact - Raldy Lopez</title>
-  <!-- Estilos principales -->
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-<!-- ====== Header ====== -->
-<header>
-  <h1>Raldy Lopez Modeling Portfolio</h1>
-
-  <!-- Menú hamburguesa -->
-  <nav class="navbar">
-    <!-- Botón hamburguesa con 3 líneas -->
-    <div class="menu-toggle" id="menu-toggle">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-
-    <!-- Enlaces del menú -->
-    <ul class="nav-links" id="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="fitness.html">Fitness</a></li>
-      <li><a href="about.html">Information</a></li>
-      <li><a href="lifestyle.html">Lifestyle</a></li>
-      <li><a href="videos.html">Videos</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
-  </nav>
-</header>
-
-<!-- ====== Contenido principal ====== -->
-<main>
-  <h2 class="contact_me">Contact me</h2>
-
-
-  <!-- Botón de WhatsApp -->
-  <div class="whatsapp-contact">
-    <p>O si prefieres, escríbeme directamente por WhatsApp:</p>
-    <a href="https://wa.me/18294635850?text=Hola%20Raldy%20un%20placer%2C%20soy%20%28TU%20NOMBRE%29%2C%20me%20gusto%20tu%20perfil%20y%20me%20gustaria%20trabajar%20o%20colaborar%20contigo%21%21" 
-       target="_blank" 
-       class="whatsapp-btn">
-      📱 Enviar WhatsApp
-    </a>
-  </div>
-
-  <!-- Botón de Instagram -->
-  <div class="instagram-contact">
-    <p>También puedes seguirme y escribirme en Instagram:</p>
-    <a href="https://www.instagram.com/raldylopez/" target="_blank" class="instagram-btn">
-      📸 Instagram
-    </a>
-  </div>
-
-  <!-- Formulario conectado con Formspree -->
-  <form class="contact-form" action="https://formspree.io/f/maqyvzla" method="POST">
-    <label for="name">Nombre</label>
-    <input type="text" id="name" name="name" placeholder="Tu nombre" required>
-
-    <label for="email">Correo electrónico</label>
-    <input type="email" id="email" name="email" placeholder="Tu correo" required>
-
-    <label for="message">Mensaje</label>
-    <textarea id="message" name="message" rows="5" placeholder="Escribe tu mensaje aquí..." required></textarea>
-
-    <button type="submit">Enviar por Email</button>
-  </form>
-
+  <!-- Bootstrap Icons para el icono de WhatsApp -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
   
-</main>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TN1697JLHN"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
 
-<!-- ====== Footer ====== -->
-<footer class="footer">
-  <p class="footer__texto">Raldy Lopez ©️</p>
-</footer>
+    gtag('config', 'G-TN1697JLHN');
+  </script>
+</head>
 
-<!-- ====== Scripts ====== -->
-<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
-<script>
-  // Configuración de Fancybox
-  Fancybox.bind("[data-fancybox]", {
-    Thumbs: false,
-    Toolbar: { display: ["close"] }
-  });
-</script>
+<body>
 
+  <!-- ====== Header ====== -->
+  <header>
+    <h1>Raldy Lopez Modeling Portfolio</h1>
 
-<!-- ====== Menu hamburguesa ====== -->
-<script>
-  const toggle = document.getElementById('menu-toggle');
-  const navLinks = document.getElementById('nav-links');
+    <!-- Menú hamburguesa -->
+    <nav class="navbar">
+      <!-- Botón hamburguesa con 3 líneas -->
+      <div class="menu-toggle" id="menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
 
-  toggle.addEventListener('click', () => {
-    toggle.classList.toggle('active');   // 🔥 activa animación del botón
-    navLinks.classList.toggle('active'); // 🔥 muestra/oculta menú
-  });
-</script>
+      <!-- Enlaces del menú -->
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="fitness.html">Fitness</a></li>
+        <li><a href="lifestyle.html">Lifestyle</a></li>
+        <!-- <li><a href="videos.html">Videos</a></li> -->
+        <li><a href="about.html">Information</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- ====== Contenido principal ====== -->
+  <main>
+    <!-- Título principal de la sección -->
+    <h2 class="contact_me">Contact me</h2>
+
+    <!-- ====== Botones externos agrupados ====== -->
+    <div class="contact-actions">
+      <!-- Botón de WhatsApp -->
+      <div>
+        <p>Send me a WhatsApp message:</p>
+        <a href="https://wa.me/18294635850?text=Hola%20Raldy%20un%20placer%2C%20soy%20%28TU%20NOMBRE%29%2C%20me%20gusto%20tu%20perfil%20y%20me%20gustaria%20trabajar%20o%20colaborar%20contigo%21%21"
+          target="_blank" class="whatsapp-btn">
+          📱 Send WhatsApp
+        </a>
+      </div>
+
+      <!-- Botón de Instagram -->
+      <div>
+        <p>Also, you can follow me and write to me on Instagram:</p>
+        <a href="https://www.instagram.com/raldylopez/" target="_blank" class="instagram-btn">
+          📸 Instagram
+        </a>
+      </div>
+    </div>
+
+    <!-- ====== Formulario conectado con Formspree ====== -->
+    <form class="contact-form" action="https://formspree.io/f/maqyvzla" method="POST">
+      <!-- Subtítulo del formulario -->
+      <p class="enviarcorreo">Send me an email</p>
+
+      <!-- Campo nombre -->
+      <label for="name">Nombre</label>
+      <input type="text" id="name" name="name" placeholder="Name" required>
+
+      <!-- Campo correo -->
+      <label for="email">Correo electrónico</label>
+      <input type="email" id="email" name="email" placeholder="Email" required>
+
+      <!-- Campo mensaje -->
+      <label for="message">Mensaje</label>
+      <textarea id="message" name="message" rows="5" placeholder="Write your message here..." required></textarea>
+
+      <!-- Botón de envío -->
+      <button type="submit">Enviar por Email</button>
+    </form>
+  </main>
+
+  <!-- ====== Footer ====== -->
+  <footer class="footer">
+    <p class="footer__texto">Todos los derechos reservados, por Raldy Lopez ©</p>
+    <p class="footer__texto">Developed by <a href="https://raldylopez20.github.io/Landing-page-personal-de-servicios/" target="_blank" class="footer-enlace">Raldy Lopez</a></p>
+  </footer>
+
+  <!-- ====== Botón flotante de WhatsApp ====== -->
+  <a href="https://wa.me/18294635850?text=Hola%20Raldy%20un%20placer%2C%20soy%20%28TU%20NOMBRE%29%2C%20me%20gusto%20tu%20perfil%20y%20me%20gustaria%20trabajar%20o%20colaborar%20contigo%21%21"
+     target="_blank" class="whatsapp-flotante">
+    <i class="bi bi-whatsapp"></i>
+  </a>
+
+  <!-- ====== Scripts ====== -->
+
+  <!-- Fancybox (si usas galería en otras páginas) -->
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
+
+  <script>
+    // Configuración de Fancybox (con miniaturas y más controles)
+    Fancybox.bind("[data-fancybox]", {
+      // Miniaturas activadas automáticamente
+      Thumbs: {
+        autoStart: true,
+      },
+      // Barra de herramientas con más botones
+      Toolbar: {
+        display: {
+          left: ["infobar"],
+          middle: ["zoomIn", "zoomOut", "toggle1to1"],
+          right: ["slideshow", "fullscreen", "download", "thumbs", "close"],
+        },
+      }
+    });
+  </script>
+
+  <!-- Menú hamburguesa responsive -->
+  <script>
+    const toggle = document.getElementById('menu-toggle');
+    const navLinks = document.getElementById('nav-links');
+
+    toggle.addEventListener('click', () => {
+      toggle.classList.toggle('active');   // Activa animación del botón
+      navLinks.classList.toggle('active'); // Muestra/oculta menú
+    });
+  </script>
 
 </body>
->>>>>>> 8680208b5df3a2a7dc2873b37cdf57f102aad452
+
 </html>
