@@ -13,27 +13,23 @@ const firebaseConfig = {
   measurementId: "G-SNLGVN9H5G"
 };
 
-// Esperar a que Firebase SDK cargue y luego inicializar
-window.addEventListener('DOMContentLoaded', function() {
-    // Verificar si Firebase está disponible
-    if (typeof firebase !== 'undefined') {
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        
-        // Initialize Firebase services
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-        const storage = firebase.storage();
-        
-        // Exportar para uso global
-        window.FirebaseConfig = firebaseConfig;
-        window.firebaseApp = app;
-        window.firebaseAuth = auth;
-        window.firestore = db;
-        window.firebaseStorage = storage;
-        
-        console.log('Firebase inicializado correctamente');
-    } else {
-        console.error('Firebase SDK no está cargado');
-    }
-});
+// Initialize Firebase immediately when script loads
+try {
+    const app = firebase.initializeApp(firebaseConfig);
+    
+    // Initialize Firebase services
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+    const storage = firebase.storage();
+    
+    // Exportar para uso global
+    window.FirebaseConfig = firebaseConfig;
+    window.firebaseApp = app;
+    window.firebaseAuth = auth;
+    window.firestore = db;
+    window.firebaseStorage = storage;
+    
+    console.log('Firebase inicializado correctamente');
+} catch (error) {
+    console.error('Error inicializando Firebase:', error);
+}
