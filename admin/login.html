@@ -7,12 +7,6 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-storage-compat.js"></script>
 </head>
 <body class="login-page">
     <div class="login-container">
@@ -35,7 +29,7 @@
                         <i class="fas fa-user"></i>
                         Usuario
                     </label>
-                    <input type="text" id="username" name="username" placeholder="usuario" required>
+                    <input type="text" id="username" name="username" placeholder="rlopez" required>
                     <div class="input-focus-effect"></div>
                 </div>
                 
@@ -45,7 +39,7 @@
                         Contraseña
                     </label>
                     <div class="password-wrapper">
-                        <input type="password" id="password" name="password" placeholder="••••••••" required>
+                        <input type="password" id="password" name="password" placeholder="rlopez123" required>
                         <button type="button" class="toggle-password" id="togglePassword">
                             <i class="fas fa-eye"></i>
                         </button>
@@ -87,7 +81,183 @@
         <div class="particles-container" id="particles"></div>
     </div>
     
-    <script src="firebase-config.js"></script>
-    <script src="app.js"></script>
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+    
+    <script>
+        // Login simple sin Firebase
+        const CONFIG = {
+            CREDENTIALS: {
+                username: 'rlopez',
+                password: 'rlopez123'
+            },
+            STORAGE_KEYS: {
+                isLoggedIn: 'portfolio_admin_logged_in',
+                sessionExpiry: 'portfolio_admin_expiry',
+                userData: 'portfolio_admin_user'
+            },
+            SESSION_DURATION: 24 * 60 * 60 * 1000
+        };
+
+        const Auth = {
+            isAuthenticated() {
+                const isLoggedIn = localStorage.getItem(CONFIG.STORAGE_KEYS.isLoggedIn);
+                const expiry = localStorage.getItem(CONFIG.STORAGE_KEYS.sessionExpiry);
+                
+                if (!isLoggedIn || !expiry) return false;
+                
+                if (Date.now() > parseInt(expiry)) {
+                    this.logout();
+                    return false;
+                }
+                
+                return true;
+            },
+            
+            async login(username, password) {
+                if (username === CONFIG.CREDENTIALS.username && 
+                    password === CONFIG.CREDENTIALS.password) {
+                    
+                    localStorage.setItem(CONFIG.STORAGE_KEYS.isLoggedIn, 'true');
+                    localStorage.setItem(CONFIG.STORAGE_KEYS.sessionExpiry, 
+                        (Date.now() + CONFIG.SESSION_DURATION).toString());
+                    localStorage.setItem(CONFIG.STORAGE_KEYS.userData, 
+                        JSON.stringify({ username: 'rlopez', name: 'Raldy Lopez', role: 'Administrador' }));
+                    
+                    return { success: true, message: 'Inicio de sesión exitoso' };
+                }
+                
+                return { success: false, message: 'Usuario o contraseña incorrectos' };
+            },
+            
+            logout() {
+                localStorage.removeItem(CONFIG.STORAGE_KEYS.isLoggedIn);
+                localStorage.removeItem(CONFIG.STORAGE_KEYS.sessionExpiry);
+                localStorage.removeItem(CONFIG.STORAGE_KEYS.userData);
+                window.location.href = 'login.html';
+            },
+            
+            getUser() {
+                const userData = localStorage.getItem(CONFIG.STORAGE_KEYS.userData);
+                return userData ? JSON.parse(userData) : null;
+            }
+        };
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+            const togglePassword = document.getElementById('togglePassword');
+            const passwordInput = document.getElementById('password');
+            
+            // Toggle password
+            if (togglePassword && passwordInput) {
+                togglePassword.addEventListener('click', () => {
+                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    passwordInput.setAttribute('type', type);
+                    togglePassword.innerHTML = `<i class="fas fa-${type === 'password' ? 'eye' : 'eye-slash'}"></i>`;
+                });
+            }
+            
+            // Create particles
+            const container = document.getElementById('particles');
+            if (container) {
+                for (let i = 0; i < 30; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.animationDelay = Math.random() * 15 + 's';
+                    particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                    const size = Math.random() * 4 + 2;
+                    particle.style.width = size + 'px';
+                    particle.style.height = size + 'px';
+                    const colors = ['#6366f1', '#ec4899', '#f59e0b', '#10b981'];
+                    particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    container.appendChild(particle);
+                }
+            }
+            
+            // Login form
+            if (loginForm) {
+                loginForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    
+                    const username = document.getElementById('username').value.trim();
+                    const password = document.getElementById('password').value;
+                    const submitBtn = loginForm.querySelector('.login-btn');
+                    const errorMessage = document.getElementById('errorMessage');
+                    
+                    if (!username || !password) {
+                        showError('Por favor completa todos los campos');
+                        return;
+                    }
+                    
+                    submitBtn.classList.add('loading');
+                    submitBtn.disabled = true;
+                    
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    
+                    const result = await Auth.login(username, password);
+                    
+                    submitBtn.classList.remove('loading');
+                    submitBtn.disabled = false;
+                    
+                    if (result.success) {
+                        errorMessage.classList.remove('show');
+                        showToast('¡Bienvenido Raldy! Redirigiendo...', 'success');
+                        setTimeout(() => {
+                            window.location.href = 'dashboard.html';
+                        }, 1500);
+                    } else {
+                        showError(result.message);
+                        const card = document.querySelector('.login-card');
+                        card.style.animation = 'shake 0.5s ease';
+                        setTimeout(() => {
+                            card.style.animation = '';
+                        }, 500);
+                    }
+                });
+            }
+            
+            function showError(message) {
+                const errorMessage = document.getElementById('errorMessage');
+                if (errorMessage) {
+                    errorMessage.querySelector('span').textContent = message;
+                    errorMessage.classList.add('show');
+                }
+            }
+        });
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            if (!container) return;
+            
+            const toast = document.createElement('div');
+            toast.className = `toast ${type} fade-in`;
+            
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-circle',
+                warning: 'fa-exclamation-triangle'
+            };
+            
+            const colors = {
+                success: '#10b981',
+                error: '#ef4444',
+                warning: '#f59e0b'
+            };
+            
+            toast.innerHTML = `
+                <i class="fas ${icons[type]}" style="color: ${colors[type]}; font-size: 20px;"></i>
+                <span>${message}</span>
+            `;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideInRight 0.3s ease reverse';
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+    </script>
 </body>
 </html>
