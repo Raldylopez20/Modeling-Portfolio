@@ -109,9 +109,8 @@ const Auth = {
     // Iniciar sesión con Firebase
     async login(username, password) {
         try {
-            // Para Firebase Auth, usamos email/password
-            // Convertimos username a email para Firebase
-            const email = `${username}@portfolio.local`;
+            // Para Firebase Auth, usamos email real
+            const email = 'raldylopez20@gmail.com'; // Email real para Firebase
             
             const result = await window.firebaseAuth.signInWithEmailAndPassword(email, password);
             
@@ -133,13 +132,14 @@ const Auth = {
         } catch (error) {
             console.error('Error en login:', error);
             
-            // Si el usuario no existe, lo creamos
-            if (error.code === 'auth/user-not-found') {
+            // Si el usuario no existe o contraseña incorrecta, lo creamos
+            if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-login-credentials') {
                 try {
                     await window.firebaseAuth.createUserWithEmailAndPassword(email, password);
                     // Intentar login de nuevo
                     return this.login(username, password);
                 } catch (createError) {
+                    console.error('Error creando usuario:', createError);
                     return { success: false, message: 'Error al crear usuario' };
                 }
             }
