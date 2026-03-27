@@ -243,6 +243,9 @@ const Analytics = {
 
 // ===== INICIALIZACIÓN =====
 document.addEventListener('DOMContentLoaded', async function() {
+    // Esperar a que Firebase se inicialice
+    await waitForFirebase();
+    
     // Verificar autenticación en páginas protegidas
     const isLoginPage = window.location.pathname.includes('login.html');
     
@@ -270,6 +273,20 @@ document.addEventListener('DOMContentLoaded', async function() {
         initDashboardPage();
     }
 });
+
+// Función para esperar a que Firebase esté disponible
+function waitForFirebase() {
+    return new Promise((resolve) => {
+        const checkFirebase = () => {
+            if (window.firebaseAuth && typeof window.firebaseAuth !== 'undefined') {
+                resolve();
+            } else {
+                setTimeout(checkFirebase, 100);
+            }
+        };
+        checkFirebase();
+    });
+}
 
 // ===== INICIALIZAR PÁGINA DE LOGIN =====
 function initLoginPage() {
