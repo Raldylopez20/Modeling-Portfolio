@@ -95,51 +95,73 @@ const Utils = {
     }
 };
 
-// ===== AUTENTICACIÓN =====
+// ===== AUTENTICACIÓN CON FIREBASE =====
 const Auth = {
     // Verificar si hay sesión activa
     isAuthenticated() {
-        const isLoggedIn = localStorage.getItem(CONFIG.STORAGE_KEYS.isLoggedIn);
-        const expiry = localStorage.getItem(CONFIG.STORAGE_KEYS.sessionExpiry);
-        
-        if (!isLoggedIn || !expiry) return false;
-        
-        // Verificar si la sesión expiró
-        if (Date.now() > parseInt(expiry)) {
-            this.logout();
-            return false;
-        }
-        
-        return true;
+        return new Promise((resolve) => {
+            window.firebaseAuth.onAuthStateChanged((user) => {
+                resolve(!!user);
+            });
+        });
     },
     
-    // Iniciar sesión
-    login(username, password) {
-        // Validar credenciales
-        if (username === CONFIG.CREDENTIALS.username && 
-            password === CONFIG.CREDENTIALS.password) {
+    // Iniciar sesión con Firebase
+    async login(username, password) {
+        try {
+            // Para Firebase Auth, usamos email/password
+            // Convertimos username a email para Firebase
+            const email = `${username}@portfolio.local`;
             
-            // Crear sesión
-            localStorage.setItem(CONFIG.STORAGE_KEYS.isLoggedIn, 'true');
-            localStorage.setItem(CONFIG.STORAGE_KEYS.sessionExpiry, 
-                (Date.now() + CONFIG.SESSION_DURATION).toString());
-            localStorage.setItem(CONFIG.STORAGE_KEYS.userData, 
-                JSON.stringify({ username: 'rlopez', name: 'Raldy Lopez', role: 'Administrador' }));
+            const result = await window.firebaseAuth.signInWithEmailAndPassword(email, password);
             
-            return { success: true, message: 'Inicio de sesión exitoso' };
+            if (result.user) {
+                // Guardar datos adicionales en localStorage
+                localStorage.setItem(CONFIG.STORAGE_KEYS.isLoggedIn, 'true');
+                localStorage.setItem(CONFIG.STORAGE_KEYS.sessionExpiry, 
+                    (Date.now() + CONFIG.SESSION_DURATION).toString());
+                localStorage.setItem(CONFIG.STORAGE_KEYS.userData, 
+                    JSON.stringify({ 
+                        username: username, 
+                        name: 'Raldy Lopez', 
+                        role: 'Administrador',
+                        uid: result.user.uid 
+                    }));
+                
+                return { success: true, message: 'Inicio de sesión exitoso' };
+            }
+        } catch (error) {
+            console.error('Error en login:', error);
+            
+            // Si el usuario no existe, lo creamos
+            if (error.code === 'auth/user-not-found') {
+                try {
+                    await window.firebaseAuth.createUserWithEmailAndPassword(email, password);
+                    // Intentar login de nuevo
+                    return this.login(username, password);
+                } catch (createError) {
+                    return { success: false, message: 'Error al crear usuario' };
+                }
+            }
+            
+            return { success: false, message: 'Usuario o contraseña incorrectos' };
         }
-        
-        return { success: false, message: 'Usuario o contraseña incorrectos' };
     },
     
     // Cerrar sesión
-    logout() {
-        localStorage.removeItem(CONFIG.STORAGE_KEYS.isLoggedIn);
-        localStorage.removeItem(CONFIG.STORAGE_KEYS.sessionExpiry);
-        localStorage.removeItem(CONFIG.STORAGE_KEYS.userData);
-        
-        // Redirigir al login
-        window.location.href = 'login.html';
+    async logout() {
+        try {
+            await window.firebaseAuth.signOut();
+            localStorage.removeItem(CONFIG.STORAGE_KEYS.isLoggedIn);
+            localStorage.removeItem(CONFIG.STORAGE_KEYS.sessionExpiry);
+            localStorage.removeItem(CONFIG.STORAGE_KEYS.userData);
+            
+            // Redirigir al login
+            window.location.href = 'login.html';
+        } catch (error) {
+            console.error('Error en logout:', error);
+            window.location.href = 'login.html';
+        }
     },
     
     // Obtener datos del usuario
@@ -220,20 +242,25 @@ const Analytics = {
 };
 
 // ===== INICIALIZACIÓN =====
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     // Verificar autenticación en páginas protegidas
     const isLoginPage = window.location.pathname.includes('login.html');
     
-    if (!isLoginPage && !Auth.isAuthenticated()) {
-        // Redirigir al login si no está autenticado
-        window.location.href = 'login.html';
-        return;
-    }
-    
-    // Si está en login y ya está autenticado, redirigir al dashboard
-    if (isLoginPage && Auth.isAuthenticated()) {
-        window.location.href = 'dashboard.html';
-        return;
+    if (!isLoginPage) {
+        // Verificar si está autenticado con Firebase
+        const isAuthenticated = await Auth.isAuthenticated();
+        if (!isAuthenticated) {
+            // Redirigir al login si no está autenticado
+            window.location.href = 'login.html';
+            return;
+        }
+    } else {
+        // Si está en login y ya está autenticado, redirigir al dashboard
+        const isAuthenticated = await Auth.isAuthenticated();
+        if (isAuthenticated) {
+            window.location.href = 'dashboard.html';
+            return;
+        }
     }
     
     // Inicializar componentes según la página
@@ -283,42 +310,44 @@ function initLoginPage() {
             submitBtn.classList.add('loading');
             submitBtn.disabled = true;
             
-            // Simular delay de red
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            
-            // Intentar login
-            const result = Auth.login(username, password);
-            
-            // Ocultar loader
-            submitBtn.classList.remove('loading');
-            submitBtn.disabled = false;
-            
-            if (result.success) {
-                // Login exitoso
-                errorMessage.classList.remove('show');
+            try {
+                // Intentar login con Firebase
+                const result = await Auth.login(username, password);
                 
-                // Guardar preferencia de recordar
-                if (remember) {
-                    localStorage.setItem('portfolio_admin_remember', 'true');
+                if (result.success) {
+                    // Login exitoso
+                    errorMessage.classList.remove('show');
+                    
+                    // Guardar preferencia de recordar
+                    if (remember) {
+                        localStorage.setItem('portfolio_admin_remember', 'true');
+                    }
+                    
+                    // Mostrar mensaje de éxito
+                    Utils.showToast('¡Bienvenido Raldy! Redirigiendo...', 'success');
+                    
+                    // Redirigir al dashboard
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1500);
+                } else {
+                    // Login fallido
+                    showError(result.message);
+                    
+                    // Shake animation
+                    const card = document.querySelector('.login-card');
+                    card.style.animation = 'shake 0.5s ease';
+                    setTimeout(() => {
+                        card.style.animation = '';
+                    }, 500);
                 }
-                
-                // Mostrar mensaje de éxito
-                Utils.showToast('¡Bienvenido Raldy! Redirigiendo...', 'success');
-                
-                // Redirigir al dashboard
-                setTimeout(() => {
-                    window.location.href = 'dashboard.html';
-                }, 1500);
-            } else {
-                // Login fallido
-                showError(result.message);
-                
-                // Shake animation
-                const card = document.querySelector('.login-card');
-                card.style.animation = 'shake 0.5s ease';
-                setTimeout(() => {
-                    card.style.animation = '';
-                }, 500);
+            } catch (error) {
+                showError('Error de conexión. Intenta nuevamente.');
+                console.error('Error en login:', error);
+            } finally {
+                // Ocultar loader
+                submitBtn.classList.remove('loading');
+                submitBtn.disabled = false;
             }
         });
     }
