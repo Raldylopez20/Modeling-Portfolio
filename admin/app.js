@@ -202,20 +202,20 @@ const Analytics = {
     // Obtener estadísticas
     async getStats() {
         // En implementación real, esto vendría de Google Analytics API
-        // Por ahora, devolvemos datos simulados
+        // Por ahora, devolvemos mensaje de carga
         return {
-            totalViews: 1250,
+            totalViews: 'Esperando datos...',
             totalPhotos: 67,
-            topPhoto: 'Jose Texeira #1',
-            topCountry: 'Rep. Dominicana',
-            viewsChange: 15,
-            period: 'Último mes'
+            topPhoto: 'Próximamente',
+            topCountry: 'Próximamente',
+            viewsChange: 'Configurando...',
+            period: 'En proceso'
         };
     },
     
-    // Obtener visitas en tiempo real (simulado)
+    // Obtener visitas en tiempo real (esperando datos reales)
     getRealtimeViews() {
-        return Math.floor(Math.random() * 5) + 1;
+        return 0; // Google Analytics actualizará esto automáticamente
     }
 };
 
@@ -434,15 +434,8 @@ function initTooltips() {
 
 // ===== ACTUALIZACIONES EN TIEMPO REAL =====
 function initRealtimeUpdates() {
-    // Actualizar visitas cada 30 segundos
-    setInterval(async () => {
-        const viewsElement = document.getElementById('totalViews');
-        if (viewsElement) {
-            const currentViews = parseInt(viewsElement.textContent.replace(/,/g, '')) || 0;
-            const newViews = currentViews + Analytics.getRealtimeViews();
-            viewsElement.textContent = Utils.formatNumber(newViews);
-        }
-    }, 30000);
+    // Nota: Las actualizaciones en tiempo real se activarán cuando Google Analytics
+    // comience a recibir datos reales. Esto puede tardar 24-48 horas.
     
     // Verificar expiración de sesión cada minuto
     setInterval(() => {
