@@ -13,3 +13,4 @@ Videos/
 # Ignorar configuraciones locales
 .vscode/
 *.tmp
+_backup_originals/

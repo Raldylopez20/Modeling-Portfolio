@@ -1,4 +1,10 @@
 /* ====== Estilos generales ====== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -62,24 +68,26 @@ section {
   overflow: hidden;
   border-radius: 8px;
   position: relative;
+  background-color: #1a1a1a; /* Fondo placeholder elegante mientras carga la imagen */
+  aspect-ratio: 3 / 4;
 }
 
 .grid img {
   width: 100%;
-  height: 500px;
+  height: 100%;
   object-fit: cover;
   display: block;
   cursor: pointer;
-  transition: transform 0.3s ease, filter 0.3s ease;
-  /* Optimización de rendimiento */
+  transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), filter 0.35s ease;
+  /* Optimización de rendimiento de renderizado */
   will-change: transform;
   backface-visibility: hidden;
-  perspective: 1000px;
+  transform: translateZ(0);
 }
 
 .grid img:hover {
-  transform: scale(1.05);
-  filter: brightness(1.1);
+  transform: scale(1.04);
+  filter: brightness(1.08);
 }
 
 /* Optimización para imágenes ocultas */
@@ -202,31 +210,34 @@ section {
 }
 
 .contact-form {
-  max-width: 600px;
+  max-width: 550px;
+  width: 100%;
   margin: 0 auto;
-  padding: 1rem;
+  padding: 2rem 1.8rem;
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
   background: #1a1a1a;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(243, 156, 18, 0.2);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(243, 156, 18, 0.15);
 }
 
 .contact-form label {
-  font-weight: bold;
-  font-size: 1rem;
+  font-weight: 600;
+  font-size: 0.95rem;
   color: #f39c12;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.1rem;
+  display: block;
 }
 
 .contact-form input,
 .contact-form textarea {
-  width: 96%;
-  padding: 0.9rem;
-  font-size: 1rem;
-  border: none;
-  border-radius: 6px;
+  width: 100%;
+  padding: 0.85rem 1rem;
+  font-size: 0.95rem;
+  font-family: inherit;
+  border: 1px solid #2e2e2e;
+  border-radius: 8px;
   background: #222;
   color: #fff;
   transition: border 0.3s ease, box-shadow 0.3s ease;
@@ -235,31 +246,34 @@ section {
 .contact-form input:focus,
 .contact-form textarea:focus {
   outline: none;
-  box-shadow: 0 0 5px #f39c12;
+  box-shadow: 0 0 8px rgba(243, 156, 18, 0.4);
   border: 1px solid #f39c12;
 }
 
 .contact-form input::placeholder,
 .contact-form textarea::placeholder {
-  color: #aaa;
+  color: #888;
   font-style: italic;
+  font-size: 0.9rem;
 }
 
 .contact-form button {
-  padding: 1rem;
+  width: 100%;
+  padding: 0.95rem 1.5rem;
   font-size: 1rem;
   background: #f39c12;
   color: #111;
   font-weight: bold;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .contact-form button:hover {
-  background: #d35400;
-  transform: scale(1.03);
+  background: #e67e22;
+  transform: scale(1.02);
+  box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
 }
 
 /* ====== Contenedor de botones externos ====== */
@@ -276,7 +290,10 @@ section {
 
 .whatsapp-btn,
 .instagram-btn {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
   width: 100%;
   max-width: 300px;
   margin: 0 auto;
@@ -285,8 +302,14 @@ section {
   font-weight: bold;
   border-radius: 6px;
   text-decoration: none;
-  transition: background 0.3s ease, transform 0.2s ease;
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
   box-sizing: border-box;
+}
+
+.whatsapp-btn i,
+.instagram-btn i {
+  font-size: 1.3rem;
+  line-height: 1;
 }
 
 .whatsapp-btn {
@@ -297,6 +320,7 @@ section {
 .whatsapp-btn:hover {
   background: #128C7E;
   transform: scale(1.03);
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
 }
 
 .instagram-btn {
@@ -308,6 +332,7 @@ section {
 .instagram-btn:hover {
   background: #C13584;
   transform: scale(1.03);
+  box-shadow: 0 4px 15px rgba(225, 48, 108, 0.4);
 }
 
 /* ====== Videos en galería ====== */
@@ -465,14 +490,18 @@ section {
   .nav-links {
     display: none;
     flex-direction: column;
-    background: #111;
+    background: rgba(17, 17, 17, 0.96);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     position: absolute;
     top: 60px;
     left: 0;
     width: 100%;
-    padding: 1rem 0;
-    gap: 1rem;
+    padding: 1.5rem 0;
+    gap: 1.2rem;
     z-index: 999;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .nav-links.active {
@@ -485,21 +514,23 @@ section {
   }
 
   .grid img {
-    height: 500px;
+    height: 100%;
   }
 
   main {
-    padding: 1rem;
+    padding: 1rem 0.85rem;
   }
 
   .contact-form {
     width: 100%;
-    padding: 0 1rem;
+    max-width: 100%;
+    padding: 1.5rem 1.25rem;
+    box-sizing: border-box;
   }
 
   .contact-form input,
   .contact-form textarea {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
 
   .contact-form button {
@@ -515,11 +546,21 @@ section {
 
 @media (max-width: 480px) {
   header h1 {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 
   nav a {
-    font-size: 1rem;
+    font-size: 0.95rem;
+  }
+
+  main {
+    padding: 0.85rem 0.6rem;
+  }
+
+  .contact_me,
+  .enviarcorreo {
+    font-size: 1.5rem;
+    margin-bottom: 1.2rem;
   }
 
   .grid {
@@ -528,24 +569,43 @@ section {
   }
 
   .grid img {
-    height: 300px;
+    height: 100%;
+  }
+
+  .contact-form {
+    padding: 1.25rem 1rem;
+    gap: 1rem;
+    border-radius: 10px;
+    margin-bottom: 3.5rem;
   }
 
   .contact-form label {
-    font-size: 0.9rem;
+    font-size: 0.88rem;
   }
 
   .contact-form input,
   .contact-form textarea {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
+    padding: 0.75rem 0.85rem;
   }
 
   .contact-form button {
     font-size: 0.95rem;
+    padding: 0.85rem;
   }
 
   .whatsapp-btn,
   .instagram-btn {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
+    padding: 0.8rem 1.2rem;
+    max-width: 100%;
+  }
+
+  .whatsapp-flotante {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    bottom: 18px;
+    right: 18px;
   }
 }
