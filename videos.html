@@ -57,7 +57,8 @@
     <p>Coming soon...👨‍💻🛠️🔧</p>
 
     <!-- Galería de videos -->
-    <section class="grid">
+    <main id="page-content">
+  <section class="grid">
       <!-- Video 1 -->
       <video controls width="250">
         <source src="videos/video1.mp4" type="video/mp4">
@@ -108,38 +109,167 @@
   </a>
 
   <!-- ====== Scripts ====== -->
-  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
 
-  <script>
-    // Configuración de Fancybox (con miniaturas y más controles)
-    Fancybox.bind("[data-fancybox]", {
-      // Miniaturas activadas automáticamente
-      Thumbs: {
-        autoStart: true,
-      },
-      // Barra de herramientas con más botones
-      Toolbar: {
-        display: {
-          left: ["infobar"],
-          middle: ["zoomIn", "zoomOut", "toggle1to1"],
-          right: ["slideshow", "fullscreen", "download", "thumbs", "close"],
-        },
-      }
+<!-- Registro de Service Worker -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
     });
-  </script>
+  }
+</script>
 
-  <!-- ====== Menu hamburguesa ====== -->
-  <script>
+<!-- ====== Sistema SPA Ultra Rápido (Transiciones Instantáneas sin Recarga) ====== -->
+<script>
+(function() {
+  const pageCache = new Map();
+
+  function normalizePath(url) {
+    if (!url) return 'index.html';
+    const clean = url.split('?')[0].split('#')[0];
+    const file = clean.split('/').pop();
+    return (file === '' || file === '.' || file === './') ? 'index.html' : file;
+  }
+
+  async function preloadPage(url) {
+    const norm = normalizePath(url);
+    if (pageCache.has(norm)) return pageCache.get(norm);
+    try {
+      const res = await fetch(url);
+      if (!res.ok) return null;
+      const htmlText = await res.text();
+      const doc = new DOMParser().parseFromString(htmlText, 'text/html');
+      const contentEl = doc.getElementById('page-content');
+      const title = doc.querySelector('title')?.innerText || document.title;
+      if (contentEl) {
+        const data = { html: contentEl.innerHTML, title };
+        pageCache.set(norm, data);
+        return data;
+      }
+    } catch (err) {
+      console.warn('Preload failed for', url, err);
+    }
+    return null;
+  }
+
+  function rebindFancybox() {
+    if (typeof Fancybox !== 'undefined') {
+      try {
+        Fancybox.unbind("[data-fancybox]");
+        Fancybox.bind("[data-fancybox]", {
+          Thumbs: { autoStart: true },
+          Toolbar: {
+            display: {
+              left: ["infobar"],
+              middle: ["zoomIn", "zoomOut", "toggle1to1"],
+              right: ["slideshow", "fullscreen", "download", "thumbs", "close"],
+            },
+          },
+          preload: 1,
+          wheel: "zoom",
+          click: "toggleZoom"
+        });
+      } catch (e) {
+        console.error('Fancybox bind error', e);
+      }
+    }
+  }
+
+  async function spaNavigate(url, push = true) {
+    const norm = normalizePath(url);
+    const container = document.getElementById('page-content');
+    if (!container) {
+      window.location.href = url;
+      return;
+    }
+
+    // Cerrar menú inmediatamente
     const toggle = document.getElementById('menu-toggle');
     const navLinks = document.getElementById('nav-links');
+    if (toggle) toggle.classList.remove('active');
+    if (navLinks) navLinks.classList.remove('active');
 
-    toggle.addEventListener('click', () => {
-      toggle.classList.toggle('active');   // Activa animación del botón
-      navLinks.classList.toggle('active'); // Muestra/oculta menú
+    container.style.opacity = '0.3';
+    container.style.transition = 'opacity 0.08s ease';
+
+    let data = pageCache.get(norm);
+    if (!data) {
+      data = await preloadPage(url);
+    }
+
+    if (data) {
+      container.innerHTML = data.html;
+      document.title = data.title;
+      if (push) {
+        history.pushState({ page: norm }, data.title, url);
+      }
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      rebindFancybox();
+      container.style.opacity = '1';
+    } else {
+      window.location.href = url;
+    }
+  }
+
+  function initSPA() {
+    const currentKey = normalizePath(window.location.pathname);
+    const contentEl = document.getElementById('page-content');
+    if (contentEl) {
+      pageCache.set(currentKey, {
+        html: contentEl.innerHTML,
+        title: document.title
+      });
+      if (currentKey === 'index.html') {
+        pageCache.set('', { html: contentEl.innerHTML, title: document.title });
+        pageCache.set('./', { html: contentEl.innerHTML, title: document.title });
+      }
+    }
+
+    // Precargar todas las páginas en memoria de fondo
+    ['index.html', 'fitness.html', 'lifestyle.html', 'about.html', 'contact.html'].forEach(p => {
+      if (normalizePath(p) !== currentKey) {
+        preloadPage(p);
+      }
     });
-  </script>
 
+    rebindFancybox();
+
+    // Toggle del menú hamburguesa
+    const toggle = document.getElementById('menu-toggle');
+    const navLinks = document.getElementById('nav-links');
+    if (toggle && navLinks) {
+      toggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggle.classList.toggle('active');
+        navLinks.classList.toggle('active');
+      });
+    }
+
+    // Interceptar clics en los enlaces del menú para cambio instantáneo (0ms)
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest('.nav-links a');
+      if (!a) return;
+      const href = a.getAttribute('href');
+      if (!href || href.startsWith('http') || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+      e.preventDefault();
+      spaNavigate(href, true);
+    });
+
+    // Manejar botón Atrás / Adelante del navegador (incluyendo Instagram)
+    window.addEventListener('popstate', (e) => {
+      const target = (e.state && e.state.page) ? e.state.page : normalizePath(window.location.pathname);
+      spaNavigate(target, false);
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSPA);
+  } else {
+    initSPA();
+  }
+})();
+</script>
 </body>
 
 </html>
