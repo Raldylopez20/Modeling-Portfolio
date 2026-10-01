@@ -1,7 +1,7 @@
 // Service Worker para Portafolio Raldy Lopez
 // Carga ultra rápida y soporte offline inteligente
 
-const CACHE_NAME = 'raldy-portfolio-v1';
+const CACHE_NAME = 'raldy-portfolio-v2';
 
 const STATIC_SHELL = [
   './',

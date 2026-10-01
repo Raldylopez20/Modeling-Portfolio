@@ -158,7 +158,22 @@
       try {
         Fancybox.unbind("[data-fancybox]");
         Fancybox.bind("[data-fancybox]", {
-          Thumbs: { autoStart: true },
+          compact: () => window.innerWidth < 768,
+          animated: true,
+          showClass: "f-fadeIn",
+          hideClass: "f-fadeOut",
+          dragToClose: true,
+          Images: {
+            initialSize: "fit",
+            zoom: false, // Desactiva animación morph desde el trigger para evitar que se quede pequeña en móviles/Instagram
+            Panzoom: {
+              maxScale: 3,
+            },
+          },
+          Thumbs: {
+            autoStart: true,
+            minCount: 2,
+          },
           Toolbar: {
             display: {
               left: ["infobar"],
@@ -166,9 +181,32 @@
               right: ["slideshow", "fullscreen", "download", "thumbs", "close"],
             },
           },
-          preload: 1,
+          preload: 2,
           wheel: "zoom",
-          click: "toggleZoom"
+          click: "toggleZoom",
+          on: {
+            "Carousel.change": (fancybox, carousel, to) => {
+              const slide = carousel.slides ? carousel.slides[to] : null;
+              if (slide && slide.panzoom) {
+                slide.panzoom.updateMetrics();
+                slide.panzoom.zoomToFit();
+              }
+            },
+            "Carousel.settle": (fancybox, carousel) => {
+              const slide = fancybox.getSlide();
+              if (slide && slide.panzoom) {
+                slide.panzoom.updateMetrics();
+                slide.panzoom.zoomToFit();
+              }
+            },
+            "ready": (fancybox) => {
+              const slide = fancybox.getSlide();
+              if (slide && slide.panzoom) {
+                slide.panzoom.updateMetrics();
+                slide.panzoom.zoomToFit();
+              }
+            }
+          }
         });
       } catch (e) {
         console.error('Fancybox bind error', e);
